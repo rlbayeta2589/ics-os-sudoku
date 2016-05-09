@@ -1,12 +1,12 @@
 CC=gcc
 ICSOS_ROOT=../..
 SDK=../../sdk
-CFLAGS=-m32 -nostdlib -fno-builtin -static
+CFLAGS=-nostdlib -fno-builtin -static
 LIBS=$(SDK)/tccsdk.c $(SDK)/libtcc1.c $(SDK)/crt1.c 
-EXE=vgademo.exe
+EXE=hello.exe
 
-$(EXE): vgademo.c
-	$(CC) $(CFLAGS) -o${EXE} vgademo.c $(LIBS)
+$(EXE): hello.c
+	$(CC) $(CFLAGS) -o${EXE} hello.c $(LIBS)
 
 install: $(EXE)
 	cp $(EXE) $(ICSOS_ROOT)/apps

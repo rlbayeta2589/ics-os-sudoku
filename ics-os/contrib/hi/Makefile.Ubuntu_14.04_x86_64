@@ -3,10 +3,10 @@ ICSOS_ROOT=../..
 SDK=../../sdk
 CFLAGS=-m32 -nostdlib -fno-builtin -static
 LIBS=$(SDK)/tccsdk.c $(SDK)/libtcc1.c $(SDK)/crt1.c 
-EXE=lights.exe
+EXE=hi.exe
 
-$(EXE): lights.c
-	$(CC) $(CFLAGS) -o${EXE} lights.c $(LIBS)
+$(EXE): hi.c
+	$(CC) $(CFLAGS) -o${EXE} hi.c $(LIBS)
 
 install: $(EXE)
 	cp $(EXE) $(ICSOS_ROOT)/apps
