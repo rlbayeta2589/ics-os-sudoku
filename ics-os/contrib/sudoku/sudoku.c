@@ -618,7 +618,7 @@ DrawBoard(int difficulty, int level){
 		key = (char) getch();
 
 		erase(xcoord-5,ycoord-5,22,17);
-		if(board_value[row-1][col-1]!=0){
+		if(board_value[row-1][col-1]!=-1){
     		sprintf(str,"%d",board_value[row-1][col-1]);
 			write_text(str,xcoord,ycoord,WHITE,0);
     	}
@@ -685,7 +685,7 @@ DrawBoard(int difficulty, int level){
     	drawCurrPos(xcoord-5,ycoord-5);
 
     	CheckBoard(xcoord-5,ycoord-5);
-    	if(board_value[row-1][col-1]!=0){
+    	if(board_value[row-1][col-1]!=-1){
     		sprintf(str,"%d",board_value[row-1][col-1]);
 			write_text(str,xcoord,ycoord,WHITE,0);
     	}
@@ -708,7 +708,7 @@ ResetGame(){
     for (i = 0, x=17; i < 9; i++, x+=25){
         for(j = 0, y=17; j < 9; j++, y+=20){
         	erase(x-5,y-5,22,17);
-        	if(board_value[i][j]!=0){
+        	if(board_value[i][j]!=-1){
 	    		sprintf(str,"%d",board_value[i][j]);
 				write_text(str,x,y,WHITE,0);
     		}
