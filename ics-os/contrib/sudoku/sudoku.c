@@ -7,8 +7,10 @@
 #define INSTRUCTIONS 2
 #define HIGHSCORES 3
 #define QUIT 4
-#define GAME_OVER 1
 
+#define GAME_OVER 1
+#define GAME_RESET 'r'
+#define GAME_QUIT 'q'
 
 #define UP 'w'
 #define DOWN 's'
@@ -526,7 +528,6 @@ InstructionsPage(){
 	while((char)getch()!=SPACE){}
 }
 
-
 DrawBoard(int difficulty, int level){
 
 	erase(1,1,400,200); //change page
@@ -581,8 +582,8 @@ DrawBoard(int difficulty, int level){
 		key = (char) getch();
 
 		erase(xcoord-5,ycoord-5,22,17);
-		if(board_value[row][col]!=0){
-    		sprintf(str,"%d",board_value[row][col]);
+		if(board_value[row-1][col-1]!=0){
+    		sprintf(str,"%d",board_value[row-1][col-1]);
 			write_text(str,xcoord,ycoord,WHITE,0);
     	}
 
@@ -612,7 +613,13 @@ DrawBoard(int difficulty, int level){
 			case '7':
 			case '8':
 			case '9':
-				board_value[row][col] = key-'0';
+				board_value[row-1][col-1] = key-'0';
+				break;
+			case GAME_RESET:
+				ResetGame();
+				break;
+			case GAME_QUIT:
+				break;
 		}
 
 		if(row==0){
@@ -632,13 +639,35 @@ DrawBoard(int difficulty, int level){
 		}
 
     	drawCurrPos(xcoord-5,ycoord-5);
-    	if(board_value[row][col]!=0){
-    		sprintf(str,"%d",board_value[row][col]);
+    	if(board_value[row-1][col-1]!=0){
+    		sprintf(str,"%d",board_value[row-1][col-1]);
 			write_text(str,xcoord,ycoord,WHITE,0);
     	}
 
-	}while(key!=SPACE);
+	}while(key!=GAME_QUIT);
 
 
     getch();
+}
+
+ResetGame(){
+	char str[10];
+	int i,j, x, y;
+	for (i = 0; i < 9; i++){
+        for(j = 0; j < 9; j++){
+        	board_value[i][j] = init_state[i][j];
+        }
+    }
+
+    for (i = 0, x=17; i < 9; i++, x+=25){
+        for(j = 0, y=17; j < 9; j++, y+=20){
+        	erase(x-5,y-5,22,17);
+        	if(board_value[i][j]!=0){
+	    		sprintf(str,"%d",board_value[i][j]);
+				write_text(str,x,y,WHITE,0);
+    		}
+    	}
+    }
+
+
 }
