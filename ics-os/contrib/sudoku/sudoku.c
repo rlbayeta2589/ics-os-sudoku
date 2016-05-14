@@ -32,6 +32,7 @@ int yIndex = 0;
 void erase(); //basically covers an area with a black rectangle
 void highlightBoard();
 int CheckBoard();
+int CheckEmpty();
 void initializeBoard();
 
 int init_state[9][9];
@@ -432,6 +433,18 @@ int CheckBoard(int xcoord, int ycoord){
 		}
 	}
 
+	return 0;
+}
+
+int CheckEmpty(){
+	int i, j;
+
+	for(i = 0; i < 9; i++){
+		for(j = 0; j < 9; j++){
+			if(board_value[i][j] == -1)
+				return -1;
+		}
+	}
 
 	return 0;
 }
@@ -697,6 +710,14 @@ DrawBoard(int difficulty, int level){
 
 		if(check!=-1){
     		drawCurrPos(xcoord-5,ycoord-5);
+		}
+
+		if(check == 0){
+			int checkIfWin = CheckEmpty();
+			if(checkIfWin == 0){
+				erase(1,1,400,200); //change page
+				write_text("You Win!",100,10,GREEN,0);
+			}
 		}
 
     	if(board_value[row-1][col-1]!=-1){
