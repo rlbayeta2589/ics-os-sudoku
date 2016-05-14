@@ -24,6 +24,9 @@
 #define GREEN 2
 #define WHITE 63
 
+int x = 0;
+int y = 0;
+
 void erase(); //basically covers an area with a black rectangle
 void highlightBoard();
 void CheckBoard();
@@ -34,6 +37,12 @@ int board_value[9][9];
 void erase(); //basically covers an area with a black rectangle
 
 int main(){
+	//initialize board
+	int i, j;	
+	for(i = 0; i < 9; i++)
+		for(j = 0; j < 9; j++)
+			board_value[i][j] = -1;
+
 	char keypress, temp[10]; 
 	
 	int choice = 0, difficulty = 0, level = 0;
@@ -166,16 +175,17 @@ int StartPage(){
 }
 
 
-void CheckBoard(int x, int y, int board[9][9]){
+void CheckBoard(int xcoord, int ycoord){
 	int i, j;
 	int a, b;
-
 
 	//x / row checker
 	for(i = 0; i < 9; i++){
 		for(j = i + 1; j < 9; j++){
-			if(board[i][x] == board[j][x]){
-				highlightBoard();
+			if(board_value[i][x] == -1)
+				continue;
+			if(board_value[i][x] == board_value[j][x]){
+				highlightBoard(xcoord, ycoord);
 				return;
 			}
 		}	
@@ -184,8 +194,10 @@ void CheckBoard(int x, int y, int board[9][9]){
 	//y / column checker
 	for(i = 0; i < 9; i++){
 		for(j = i + 1; j < 9; j++){
-			if(board[y][i] == board[y][j]){
-				highlightBoard();
+			if(board_value[y][i] == -1)
+				continue;
+			if(board_value[y][i] == board_value[y][j]){
+				highlightBoard(xcoord, ycoord);
 				return;
 			}
 		}
@@ -211,11 +223,14 @@ void CheckBoard(int x, int y, int board[9][9]){
 				for(a = 0; a <= 2; a++){
 					for(b = 0; b <= 2; b++){
 
+						//will compare empty index
+						if(board_value[i][j] == -1)
+							continue;
 						//will compare with itself
 						if(i == a && j == b)
 							continue;
-						if(board[i][j] == board[a][b]){
-							highlightBoard();
+						if(board_value[i][j] == board_value[a][b]){
+							highlightBoard(xcoord, ycoord);
 							return;
 						}
 					}
@@ -233,10 +248,12 @@ void CheckBoard(int x, int y, int board[9][9]){
 				for(a = 0; a <= 2; a++){
 					for(b = 3; b <= 5; b++){
 
+						if(board_value[i][j] == -1)
+							continue;
 						if(i == a && j == b)
 							continue;
-						if(board[i][j] == board[a][b]){
-							highlightBoard();
+						if(board_value[i][j] == board_value[a][b]){
+							highlightBoard(xcoord, ycoord);
 							return;
 						}
 
@@ -255,10 +272,12 @@ void CheckBoard(int x, int y, int board[9][9]){
 				for(a = 0; a <= 2; a++){
 					for(b = 6; b <= 8; b++){
 
+						if(board_value[i][j] == -1)
+							continue;
 						if(i == a && j == b)
 							continue;
-						if(board[i][j] == board[a][b]){
-							highlightBoard();
+						if(board_value[i][j] == board_value[a][b]){
+							highlightBoard(xcoord, ycoord);
 							return;
 						}
 					}
@@ -276,10 +295,12 @@ void CheckBoard(int x, int y, int board[9][9]){
 				for(a = 3; a <= 5; a++){
 					for(b = 0; b <= 2; b++){
 
+						if(board_value[i][j] == -1)
+							continue;
 						if(i == a && j == b)
 							continue;
-						if(board[i][j] == board[a][b]){
-							highlightBoard();
+						if(board_value[i][j] == board_value[a][b]){
+							highlightBoard(xcoord, ycoord);
 							return;
 						}
 					}
@@ -297,10 +318,12 @@ void CheckBoard(int x, int y, int board[9][9]){
 				for(a = 3; a <= 5; a++){
 					for(b = 3; b <= 5; b++){
 
+						if(board_value[i][j] == -1)
+							continue;
 						if(i == a && j == b)
 							continue;
-						if(board[i][j] == board[a][b]){
-							highlightBoard();
+						if(board_value[i][j] == board_value[a][b]){
+							highlightBoard(xcoord, ycoord);
 							return;
 						}
 					}
@@ -318,10 +341,12 @@ void CheckBoard(int x, int y, int board[9][9]){
 				for(a = 3; a <= 5; a++){
 					for(b = 6; b <= 8; b++){
 
+						if(board_value[i][j] == -1)
+							continue;
 						if(i == a && j == b)
 							continue;
-						if(board[i][j] == board[a][b]){
-							highlightBoard();
+						if(board_value[i][j] == board_value[a][b]){
+							highlightBoard(xcoord, ycoord);
 							return;
 						}
 					}
@@ -339,10 +364,12 @@ void CheckBoard(int x, int y, int board[9][9]){
 				for(a = 6; a <= 8; a++){
 					for(b = 0; b <= 2; b++){
 
+						if(board_value[i][j] == -1)
+							continue;
 						if(i == a && j == b)
 							continue;
-						if(board[i][j] == board[a][b]){
-							highlightBoard();
+						if(board_value[i][j] == board_value[a][b]){
+							highlightBoard(xcoord, ycoord);
 							return;
 						}
 					}
@@ -360,10 +387,12 @@ void CheckBoard(int x, int y, int board[9][9]){
 				for(a = 6; a <= 8; a++){
 					for(b = 3; b <= 5; b++){
 
+						if(board_value[i][j] == -1)
+							continue;
 						if(i == a && j == b)
 							continue;
-						if(board[i][j] == board[a][b]){
-							highlightBoard();
+						if(board_value[i][j] == board_value[a][b]){
+							highlightBoard(xcoord, ycoord);
 							return;
 						}
 					}
@@ -381,10 +410,12 @@ void CheckBoard(int x, int y, int board[9][9]){
 				for(a = 6; a <= 8; a++){
 					for(b = 6; b <= 8; b++){
 
+						if(board_value[i][j] == -1)
+							continue;
 						if(i == a && j == b)
 							continue;
-						if(board[i][j] == board[a][b]){
-							highlightBoard();
+						if(board_value[i][j] == board_value[a][b]){
+							highlightBoard(xcoord, ycoord);
 							return;
 						}
 					}
@@ -394,8 +425,13 @@ void CheckBoard(int x, int y, int board[9][9]){
 	}
 }
 
-void highlightBoard(){
-	return;
+void highlightBoard(int x, int y){
+    int i, j;
+    for (i = y; i < y+17; i++){
+        for(j = x; j < x+22; j++){
+            write_pixel(j, i, RED);
+        }
+    }
 }
 
 //display difficulty picking
@@ -581,25 +617,29 @@ DrawBoard(int difficulty, int level){
 		key = (char) getch();
 
 		erase(xcoord-5,ycoord-5,22,17);
-		if(board_value[row][col]!=0){
+		if(board_value[row][col]!=-1){
     		sprintf(str,"%d",board_value[row][col]);
 			write_text(str,xcoord,ycoord,WHITE,0);
     	}
 
 		switch(key){
 			case UP:
+				y--;
 				row--;
 				ycoord-=20;
 				break;
 			case DOWN:
+				y++;
 				row++;
 				ycoord+=20;
 				break;
 			case LEFT:
+				x--;
 				col--;
 				xcoord-=25;
 				break;
 			case RIGHT:
+				x++;
 				col++;
 				xcoord+=25;
 				break;
@@ -616,23 +656,28 @@ DrawBoard(int difficulty, int level){
 		}
 
 		if(row==0){
+			x = 8;
 			row=9;
 			ycoord=177;
 		}else if(row==10){
+			x = 0;
 			row=1;
 			ycoord=17;
 		}
 
 		if(col==0){
+			y = 8;
 			col=9;
 			xcoord=217;
 		}else if(col==10){
+			y = 0;
 			col=1;
 			xcoord=17;
 		}
 
     	drawCurrPos(xcoord-5,ycoord-5);
-    	if(board_value[row][col]!=0){
+    	CheckBoard(xcoord-5,ycoord-5);
+    	if(board_value[row][col]!=-1){
     		sprintf(str,"%d",board_value[row][col]);
 			write_text(str,xcoord,ycoord,WHITE,0);
     	}
