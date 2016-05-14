@@ -26,12 +26,13 @@
 #define GREEN 2
 #define WHITE 63
 
-int x = 0;
-int y = 0;
+int xIndex = 0;
+int yIndex = 0;
 
 void erase(); //basically covers an area with a black rectangle
 void highlightBoard();
 int CheckBoard();
+void initializeBoard();
 
 int init_state[9][9];
 int board_value[9][9];
@@ -39,12 +40,7 @@ int board_value[9][9];
 void erase(); //basically covers an area with a black rectangle
 
 int main(){
-	//initialize board
-	int i, j;	
-	for(i = 0; i < 9; i++)
-		for(j = 0; j < 9; j++)
-			board_value[i][j] = -1;
-
+	initializeBoard();
 	char keypress, temp[10]; 
 	
 	int choice = 0, difficulty = 0, level = 0;
@@ -98,6 +94,13 @@ void drawCurrPos(int x, int y){
             write_pixel(j, i, GREEN);
         }
     }
+}
+
+void initializeBoard(){
+	int i, j;	
+	for(i = 0; i < 9; i++)
+		for(j = 0; j < 9; j++)
+			board_value[i][j] = -1;
 }
 
 Controls(){
@@ -180,13 +183,16 @@ int StartPage(){
 int CheckBoard(int xcoord, int ycoord){
 	int i, j;
 	int a, b;
+	char str[10];
 
 	//x / row checker
 	for(i = 0; i < 9; i++){
 		for(j = i + 1; j < 9; j++){
-			if(board_value[i][x] == -1)
+			if(board_value[i][xIndex] == -1)
 				continue;
-			if(board_value[i][x] == board_value[j][x]){
+			if(board_value[i][xIndex] == board_value[j][xIndex]){
+				sprintf(str,"%d",xIndex);
+				write_text(str,100,10,GREEN,0);
 				highlightBoard(xcoord, ycoord);
 				return -1;
 			}
@@ -196,9 +202,11 @@ int CheckBoard(int xcoord, int ycoord){
 	//y / column checker
 	for(i = 0; i < 9; i++){
 		for(j = i + 1; j < 9; j++){
-			if(board_value[y][i] == -1)
+			if(board_value[yIndex][i] == -1)
 				continue;
-			if(board_value[y][i] == board_value[y][j]){
+			if(board_value[yIndex][i] == board_value[yIndex][j]){
+				sprintf(str,"%d",yIndex);
+				write_text(str,100,10,GREEN,0);
 				highlightBoard(xcoord, ycoord);
 				return -1;
 			}
@@ -215,7 +223,7 @@ int CheckBoard(int xcoord, int ycoord){
 
 
 	//first cluster checking
-	if(x <= 2 && y <= 2){
+	if(xIndex <= 2 && yIndex <= 2){
 
 		//looping the array to get a value
 		for(i = 0; i <= 2; i++){
@@ -242,7 +250,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//second cluster checking
-	else if(x <= 2 && y <= 5 && y > 2){
+	else if(xIndex <= 2 && yIndex <= 5 && yIndex > 2){
 
 		for(i = 0; i <= 2; i++){
 			for(j = 3; j <= 5; j++){
@@ -266,7 +274,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//third cluster checking
-	else if(x <= 2 && y <= 8 && y > 5){
+	else if(xIndex <= 2 && yIndex <= 8 && yIndex > 5){
 
 		for(i = 0; i <= 2; i++){
 			for(j = 6; j <= 8; j++){
@@ -289,7 +297,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//fourth cluster checking
-	else if(x <= 5 && x > 2 && y <= 2){
+	else if(xIndex <= 5 && xIndex > 2 && yIndex <= 2){
 		
 		for(i = 3; i <= 5; i++){
 			for(j = 0; j <= 2; j++){
@@ -312,7 +320,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//fifth cluster checking
-	else if(x <= 5 && x > 2 && y <= 5 && y > 2){
+	else if(xIndex <= 5 && xIndex > 2 && yIndex <= 5 && yIndex > 2){
 
 		for(i = 3; i <= 5; i++){
 			for(j = 3; j <= 5; j++){
@@ -335,7 +343,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//sixth cluster checking
-	else if(x <= 5 && x > 2 && y <= 8 && y > 5){
+	else if(xIndex <= 5 && xIndex > 2 && yIndex <= 8 && yIndex > 5){
 
 		for(i = 3; i <= 5; i++){
 			for(j = 6; j <= 8; j++){
@@ -358,7 +366,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//seventh cluster checking
-	else if(x <= 8 && x > 5 && y <= 2){
+	else if(xIndex <= 8 && xIndex > 5 && yIndex <= 2){
 
 		for(i = 6; i <= 8; i++){
 			for(j = 0; j <= 2; j++){
@@ -381,7 +389,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//eighth cluster checking
-	else if(x <= 8 && x > 5 && y <= 5 && y > 2){
+	else if(xIndex <= 8 && xIndex > 5 && yIndex <= 5 && yIndex > 2){
 
 		for(i = 6; i <= 8; i++){
 			for(j = 3; j <= 5; j++){
@@ -404,7 +412,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//ninth cluster checking
-	else if(x <= 8 && x > 5 && y <= 8 && y > 5){
+	else if(xIndex <= 8 && xIndex > 5 && yIndex <= 8 && yIndex > 5){
 		
 		for(i = 6; i <= 8; i++){
 			for(j = 6; j <= 8; j++){
@@ -568,7 +576,7 @@ InstructionsPage(){
 }
 
 DrawBoard(int difficulty, int level){
-
+	initializeBoard();
 	erase(1,1,400,200); //change page
 
 	char key, str[10];
@@ -629,22 +637,22 @@ DrawBoard(int difficulty, int level){
 
 		switch(key){
 			case UP:
-				y--;
+				yIndex--;
 				row--;
 				ycoord-=20;
 				break;
 			case DOWN:
-				y++;
+				yIndex++;
 				row++;
 				ycoord+=20;
 				break;
 			case LEFT:
-				x--;
+				xIndex--;
 				col--;
 				xcoord-=25;
 				break;
 			case RIGHT:
-				x++;
+				xIndex++;
 				col++;
 				xcoord+=25;
 				break;
@@ -668,21 +676,21 @@ DrawBoard(int difficulty, int level){
 		}
 
 		if(row==0){
-			x = 8;
+			yIndex = 8;
 			row=9;
 			ycoord=177;
 		}else if(row==10){
-			x = 0;
+			yIndex = 0;
 			row=1;
 			ycoord=17;
 		}
 
 		if(col==0){
-			y = 8;
+			xIndex = 8;
 			col=9;
 			xcoord=217;
 		}else if(col==10){
-			y = 0;
+			xIndex = 0;
 			col=1;
 			xcoord=17;
 		}
