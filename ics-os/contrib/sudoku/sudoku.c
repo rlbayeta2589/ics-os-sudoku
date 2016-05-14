@@ -24,6 +24,9 @@
 #define GREEN 2
 #define WHITE 63
 
+void erase(); //basically covers an area with a black rectangle
+void highlightBoard();
+void CheckBoard();
 
 int init_state[9][9];
 int board_value[9][9];
@@ -32,7 +35,9 @@ void erase(); //basically covers an area with a black rectangle
 
 int main(){
 	char keypress, temp[10]; 
+	
 	int choice = 0, difficulty = 0, level = 0;
+	int board[9][9];
 	set_graphics(VGA_320X200X256);
 	
 	erase(1,1,400,200); //change page
@@ -160,6 +165,238 @@ int StartPage(){
 	return choice;
 }
 
+
+void CheckBoard(int x, int y, int board[9][9]){
+	int i, j;
+	int a, b;
+
+
+	//x / row checker
+	for(i = 0; i < 9; i++){
+		for(j = i + 1; j < 9; j++){
+			if(board[i][x] == board[j][x]){
+				highlightBoard();
+				return;
+			}
+		}	
+	}
+
+	//y / column checker
+	for(i = 0; i < 9; i++){
+		for(j = i + 1; j < 9; j++){
+			if(board[y][i] == board[y][j]){
+				highlightBoard();
+				return;
+			}
+		}
+	}
+
+
+	/*******************
+	 CLUSTER ORIENTATION 
+		 1   2   3
+		 4   5   6
+		 7   8   9
+	********************/
+
+
+	//first cluster checking
+	if(x <= 2 && y <= 2){
+
+		//looping the array to get a value
+		for(i = 0; i <= 2; i++){
+			for(j = 0; j <= 2; j++){
+
+				//looping the array to compare the value to all values in the array
+				for(a = 0; a <= 2; a++){
+					for(b = 0; b <= 2; b++){
+
+						//will compare with itself
+						if(i == a && j == b)
+							continue;
+						if(board[i][j] == board[a][b]){
+							highlightBoard();
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//second cluster checking
+	else if(x <= 2 && y <= 5 && y > 2){
+
+		for(i = 0; i <= 2; i++){
+			for(j = 3; j <= 5; j++){
+
+				for(a = 0; a <= 2; a++){
+					for(b = 3; b <= 5; b++){
+
+						if(i == a && j == b)
+							continue;
+						if(board[i][j] == board[a][b]){
+							highlightBoard();
+							return;
+						}
+
+					}
+				}
+			}
+		}	
+	}
+
+	//third cluster checking
+	else if(x <= 2 && y <= 8 && y > 5){
+
+		for(i = 0; i <= 2; i++){
+			for(j = 6; j <= 8; j++){
+
+				for(a = 0; a <= 2; a++){
+					for(b = 6; b <= 8; b++){
+
+						if(i == a && j == b)
+							continue;
+						if(board[i][j] == board[a][b]){
+							highlightBoard();
+							return;
+						}
+					}
+				}
+			}
+		}	
+	}
+
+	//fourth cluster checking
+	else if(x <= 5 && x > 2 && y <= 2){
+		
+		for(i = 3; i <= 5; i++){
+			for(j = 0; j <= 2; j++){
+
+				for(a = 3; a <= 5; a++){
+					for(b = 0; b <= 2; b++){
+
+						if(i == a && j == b)
+							continue;
+						if(board[i][j] == board[a][b]){
+							highlightBoard();
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//fifth cluster checking
+	else if(x <= 5 && x > 2 && y <= 5 && y > 2){
+
+		for(i = 3; i <= 5; i++){
+			for(j = 3; j <= 5; j++){
+
+				for(a = 3; a <= 5; a++){
+					for(b = 3; b <= 5; b++){
+
+						if(i == a && j == b)
+							continue;
+						if(board[i][j] == board[a][b]){
+							highlightBoard();
+							return;
+						}
+					}
+				}
+			}
+		}	
+	}
+
+	//sixth cluster checking
+	else if(x <= 5 && x > 2 && y <= 8 && y > 5){
+
+		for(i = 3; i <= 5; i++){
+			for(j = 6; j <= 8; j++){
+
+				for(a = 3; a <= 5; a++){
+					for(b = 6; b <= 8; b++){
+
+						if(i == a && j == b)
+							continue;
+						if(board[i][j] == board[a][b]){
+							highlightBoard();
+							return;
+						}
+					}
+				}
+			}
+		}	
+	}
+
+	//seventh cluster checking
+	else if(x <= 8 && x > 5 && y <= 2){
+
+		for(i = 6; i <= 8; i++){
+			for(j = 0; j <= 2; j++){
+
+				for(a = 6; a <= 8; a++){
+					for(b = 0; b <= 2; b++){
+
+						if(i == a && j == b)
+							continue;
+						if(board[i][j] == board[a][b]){
+							highlightBoard();
+							return;
+						}
+					}
+				}
+			}
+		}	
+	}
+
+	//eighth cluster checking
+	else if(x <= 8 && x > 5 && y <= 5 && y > 2){
+
+		for(i = 6; i <= 8; i++){
+			for(j = 3; j <= 5; j++){
+
+				for(a = 6; a <= 8; a++){
+					for(b = 3; b <= 5; b++){
+
+						if(i == a && j == b)
+							continue;
+						if(board[i][j] == board[a][b]){
+							highlightBoard();
+							return;
+						}
+					}
+				}
+			}
+		}	
+	}
+
+	//ninth cluster checking
+	else if(x <= 8 && x > 5 && y <= 8 && y > 5){
+		
+		for(i = 6; i <= 8; i++){
+			for(j = 6; j <= 8; j++){
+
+				for(a = 6; a <= 8; a++){
+					for(b = 6; b <= 8; b++){
+
+						if(i == a && j == b)
+							continue;
+						if(board[i][j] == board[a][b]){
+							highlightBoard();
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void highlightBoard(){
+	return;
+}
 
 //display difficulty picking
 int DifficultyPage(){
