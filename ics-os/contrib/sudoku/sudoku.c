@@ -3,10 +3,12 @@
 #include "../../sdk/time.h"
 
 
-#define start 1
-#define instructions 2
-#define highscores 3
-#define quit 4
+#define START 1
+#define INSTRUCTIONS 2
+#define HIGHSCORES 3
+#define QUIT 4
+#define GAME_OVER 1
+
 
 #define UP 'w'
 #define DOWN 's'
@@ -22,34 +24,40 @@
 #define GREEN 2
 #define WHITE 63
 
-void erase(); //basically covers an area with a black rectangle
 
+int init_state[9][9];
+int board_value[9][9];
+
+void erase(); //basically covers an area with a black rectangle
 
 int main(){
 	char keypress, temp[10]; 
-	int choice = 0;
+	int choice = 0, difficulty = 0, level = 0;
 	set_graphics(VGA_320X200X256);
 	
 	erase(1,1,400,200); //change page
-	Controls();
-
+	//Controls();
 
 	do{
 		choice = StartPage();
 
 		switch(choice){
-			case start : 
-				DifficultyPage();	//print page
-				DrawBoard();
+			case START : 
+				difficulty = DifficultyPage();	//print page
+				level = LevelPage();
+				
+				//read file and initialize the 2d array here
+
+				DrawBoard(difficulty, level);
 				break;
-			case instructions :
+			case INSTRUCTIONS :
 				InstructionsPage();	//print page
 				break;
-			case highscores :
+			case HIGHSCORES :
 				break;
 		}
 
-	}while(choice!=quit);
+	}while(choice != QUIT);
 
 
 //---------------------------------------------//	
@@ -67,78 +75,13 @@ void erase(int x, int y, int width, int height){
     }
 }
 
-DrawBoard(){
-
-	erase(1,1,400,200); //change page
-
-	int i,j;
-
-	for (i = 60; i <= 240; i++){
-        for(j = 30; j <= 165; j++){
-
-
-        	if(i%20==0 || j%15==0){
-        		write_pixel(i, j, GRAY);
-        	}else{
-        		write_pixel(i, j, WHITE);
-        	}
-        	
-        	if(i==120 || i==180){
-        		write_pixel(i-1, j, GRAY);
-        		write_pixel(i+1, j, GRAY);
-        	}
-
-        	if(j==75 || j==120){
-        		write_pixel(i, j-1, GRAY);
-        		write_pixel(i, j+1, GRAY);
-        	}
-
+void drawCurrPos(int x, int y){
+    int i, j;
+    for (i = y; i < y+17; i++){
+        for(j = x; j < x+22; j++){
+            write_pixel(j, i, GREEN);
         }
     }
-
-    getch();
-}
-
-//display instructions
-InstructionsPage(){
-	erase(1,1,400,200); //change page
-
-	write_text("Instructions",100,10,GREEN,0);
-	write_text("The user will pick the difficulty",10,30,WHITE,0);
-	write_text("of the game",90,40,WHITE,0);
-	getch();
-	write_text("Choices of difficulty levels are:",10,60,WHITE,0);
-	getch();
-	write_text("Easy",50,75,WHITE,0);
-	getch();
-	write_text("Medium",130,75,WHITE,0);
-	getch();
-	write_text("Hard",220,75,WHITE,0);
-	getch();
-	write_text("Random puzzle of picked difficulty",10,95,WHITE,0);
-	write_text("will be loaded",90,115,WHITE,0);
-	getch();
-	write_text("Navigate using 'W' 'A' 'S' 'D' keys",8,140,WHITE,0);
-	getch();
-	write_text("Input answers using keys (1-9)",10,160,WHITE,0);
-	getch();
-
-	write_text(">> BACK",10,180,WHITE,0);
-	while((char)getch()!=SPACE){}
-}
-
-
-//display difficulty picking
-DifficultyPage(){
-	//difficulty options
-	erase(1,1,400,200); //change page
-
-	write_text("1 - Easy",40,40,WHITE,0); 
-	write_text("2 - Medium",80,80,WHITE,0);
-	write_text("3 - Hard",120,120,WHITE,0);
-	write_text("4 - Back",200,160,WHITE,0);
-
-	while((char)getch()!=SPACE){}
 }
 
 Controls(){
@@ -202,7 +145,7 @@ int StartPage(){
 				break;
 		}
 
-		if(choice==-1){
+		if(choice==0){
 			choice=4;
 			ycoord=140;
 		}else if(choice==5){
@@ -218,3 +161,247 @@ int StartPage(){
 }
 
 
+//display difficulty picking
+int DifficultyPage(){
+	//difficulty options
+	erase(1,1,400,200); //change page
+
+	char key;
+	int choice=1, xcoord=50, ycoord=83;
+
+	write_text("Select Dificulty",80,40,WHITE,0);
+
+	write_text("Easy",50,80,WHITE,0); 
+	write_text("Medium",130,80,WHITE,0);
+	write_text("Hard",220,80,WHITE,0);
+	write_text("Back",145,170,WHITE,0);
+	write_text("_____",xcoord,ycoord,WHITE,0); 
+
+	do{
+		key = (char) getch();
+
+		switch(key){
+			case LEFT:
+				choice--;
+				erase(xcoord,ycoord+5,80,3);
+				xcoord-=80;
+				break;
+			case RIGHT:
+				choice++;
+				erase(xcoord,ycoord+5,80,3);
+				xcoord+=80;
+				break;
+		}
+
+		if(choice==0){
+			choice=3;
+			xcoord=210;
+		}else if(choice==4){
+			choice=1;
+			xcoord=50;
+		}
+
+		write_text("_____",xcoord,ycoord,WHITE,0); 
+
+	}while(key!=SPACE);
+
+	return choice;
+}
+
+int LevelPage(){
+	//level options
+
+	char key;
+	int choice=1, xcoord=50, ycoord=143;
+
+	write_text("Select Level",95,120,WHITE,0);
+
+	write_text("1",50,140,WHITE,0); 
+	write_text("2",70,140,WHITE,0); 
+	write_text("3",90,140,WHITE,0); 
+	write_text("4",110,140,WHITE,0); 
+	write_text("5",130,140,WHITE,0); 
+	write_text("6",150,140,WHITE,0); 
+	write_text("7",170,140,WHITE,0); 
+	write_text("8",190,140,WHITE,0); 
+	write_text("9",210,140,WHITE,0); 
+	write_text("10",230,140,WHITE,0); 
+	write_text("_",xcoord,ycoord,WHITE,0); 
+
+	do{
+		key = (char) getch();
+
+		switch(key){
+			case LEFT:
+				choice--;
+				erase(xcoord,ycoord+5,20,3);
+				xcoord-=20;
+				break;
+			case RIGHT:
+				choice++;
+				erase(xcoord,ycoord+5,20,3);
+				xcoord+=20;
+				break;
+		}
+
+		if(choice==0){
+			choice=3;
+			xcoord=230;
+		}else if(choice==11){
+			choice=1;
+			xcoord=50;
+		}
+
+		write_text("_",xcoord,ycoord,WHITE,0); 
+
+	}while(key!=SPACE);
+
+	return choice;
+}
+
+//display instructions
+InstructionsPage(){
+	erase(1,1,400,200); //change page
+
+	write_text(">> NEXT",10,180,WHITE,0);
+
+	write_text("Instructions",100,10,GREEN,0);
+	write_text("The user will pick the difficulty",10,30,WHITE,0);
+	write_text("of the game",90,40,WHITE,0);
+	getch();
+	write_text("Choices of difficulty levels are:",10,60,WHITE,0);
+	getch();
+	write_text("Easy",50,75,WHITE,0);
+	getch();
+	write_text("Medium",130,75,WHITE,0);
+	getch();
+	write_text("Hard",220,75,WHITE,0);
+	getch();
+	write_text("Random puzzle of picked difficulty",10,95,WHITE,0);
+	write_text("will be loaded",90,115,WHITE,0);
+	getch();
+	write_text("Navigate using 'W' 'A' 'S' 'D' keys",8,140,WHITE,0);
+	getch();
+	write_text("Input answers using keys (1-9)",10,160,WHITE,0);
+	erase(10,180,100,40);
+	write_text(">> BACK",10,180,WHITE,0);
+
+	while((char)getch()!=SPACE){}
+}
+
+
+DrawBoard(int difficulty, int level){
+
+	erase(1,1,400,200); //change page
+
+	char key, str[10];
+	int i,j, xcoord=17, ycoord=17, row=1, col=1;
+
+	for (i = 240; i <= 310; i++){
+        for(j = 60; j <= 105; j++){
+    		write_pixel(i, j, PALE_YELLOW);
+        }
+    }
+
+	if(difficulty==1){
+		write_text("EASY",250,70,DARK_BLUE,0);
+	}else if(difficulty==2){
+		write_text("MEDIUM",250,70,DARK_BLUE,0);
+	}else if(difficulty==3){
+		write_text("HARD",250,70,DARK_BLUE,0);
+	}
+
+    sprintf(str, "LVL %d", level);
+	write_text(str,260,90,DARK_BLUE,0);
+
+	write_text("[R] eset",242,120,WHITE,0);
+	write_text("[Q] uit",242,140,WHITE,0);
+
+	for (i = 10; i <= 235; i++){
+        for(j = 10; j <= 190; j++){
+
+        	if((i+40)%25==0 || (j+10)%20==0){
+        		write_pixel(i, j, WHITE);
+        	}
+        	
+        	if(i==85 || i==160){
+        		write_pixel(i-1, j, WHITE);
+        		write_pixel(i+1, j, WHITE);
+        	}
+
+        	if(j==70 || j==130){
+        		write_pixel(i, j-1, WHITE);
+        		write_pixel(i, j+1, WHITE);
+        	}
+
+        }
+    }
+
+	//write_text("o",xcoord,ycoord,WHITE,0); 
+    drawCurrPos(xcoord-5,ycoord-5);
+
+	do{
+		key = (char) getch();
+
+		erase(xcoord-5,ycoord-5,22,17);
+		if(board_value[row][col]!=0){
+    		sprintf(str,"%d",board_value[row][col]);
+			write_text(str,xcoord,ycoord,WHITE,0);
+    	}
+
+		switch(key){
+			case UP:
+				row--;
+				ycoord-=20;
+				break;
+			case DOWN:
+				row++;
+				ycoord+=20;
+				break;
+			case LEFT:
+				col--;
+				xcoord-=25;
+				break;
+			case RIGHT:
+				col++;
+				xcoord+=25;
+				break;
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				board_value[row][col] = key-'0';
+		}
+
+		if(row==0){
+			row=9;
+			ycoord=177;
+		}else if(row==10){
+			row=1;
+			ycoord=17;
+		}
+
+		if(col==0){
+			col=9;
+			xcoord=217;
+		}else if(col==10){
+			col=1;
+			xcoord=17;
+		}
+
+    	drawCurrPos(xcoord-5,ycoord-5);
+    	if(board_value[row][col]!=0){
+    		sprintf(str,"%d",board_value[row][col]);
+			write_text(str,xcoord,ycoord,WHITE,0);
+    	}
+
+	}while(key!=SPACE);
+
+
+    getch();
+}
