@@ -99,8 +99,10 @@ void drawCurrPos(int x, int y){
 void initializeBoard(){
 	int i, j;	
 	for(i = 0; i < 9; i++)
-		for(j = 0; j < 9; j++)
+		for(j = 0; j < 9; j++){
 			board_value[i][j] = -1;
+			init_state[i][j] = -1;
+		}
 }
 
 Controls(){
@@ -191,8 +193,6 @@ int CheckBoard(int xcoord, int ycoord){
 			if(board_value[i][xIndex] == -1)
 				continue;
 			if(board_value[i][xIndex] == board_value[j][xIndex]){
-				sprintf(str,"%d",xIndex);
-				write_text(str,100,10,GREEN,0);
 				highlightBoard(xcoord, ycoord);
 				return -1;
 			}
@@ -205,8 +205,6 @@ int CheckBoard(int xcoord, int ycoord){
 			if(board_value[yIndex][i] == -1)
 				continue;
 			if(board_value[yIndex][i] == board_value[yIndex][j]){
-				sprintf(str,"%d",yIndex);
-				write_text(str,100,10,GREEN,0);
 				highlightBoard(xcoord, ycoord);
 				return -1;
 			}
