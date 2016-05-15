@@ -17,7 +17,7 @@
 #define DOWN 's'
 #define LEFT 'a'
 #define RIGHT 'd'
-#define SPACE ' '
+#define ENTER '\n'
 
 #define YELLOW 54
 #define PALE_YELLOW 62
@@ -59,8 +59,7 @@ int main(){
 			case START : 
 				difficulty = DifficultyPage();	//print page
 				level = LevelPage();
-				
-				//read file and initialize the 2d array here
+
 				generateLevel(init_state,difficulty,level);
 				DrawBoard(difficulty, level);
 				break;
@@ -112,7 +111,6 @@ void initializeBoard(){
 	for(i = 0; i < 9; i++)
 		for(j = 0; j < 9; j++){
 			board_value[i][j] = -1;
-			init_state[i][j] = -1;
 		}
 }
 
@@ -127,12 +125,12 @@ Controls(){
 	write_text("D ==>",180,75,WHITE,0);
 	write_text("||",145,90,WHITE,0);
 	write_text("\\/",145,105,WHITE,0);
-	write_text("i___SPACE___i",100,120,WHITE,0);
+	write_text("i___ENTER___i",100,120,WHITE,0);
 	write_text("SELECT",130,140,WHITE,0);
 
 	write_text("Select to continue . . .",70,180,WHITE,0);
 
-	while((char)getch()!=SPACE){}
+	while((char)getch()!=ENTER){}
 }
 
 //display homepage
@@ -187,7 +185,7 @@ int StartPage(){
 
 		write_text(">>",xcoord,ycoord,WHITE,0); 
 
-	}while(key!=SPACE);
+	}while(key!=ENTER);
 
 	return choice;
 }
@@ -510,7 +508,7 @@ int DifficultyPage(){
 
 		write_text("_____",xcoord,ycoord,WHITE,0); 
 
-	}while(key!=SPACE);
+	}while(key!=ENTER);
 
 	return choice;
 }
@@ -561,7 +559,7 @@ int LevelPage(){
 
 		write_text("_",xcoord,ycoord,WHITE,0); 
 
-	}while(key!=SPACE);
+	}while(key!=ENTER);
 
 	return choice;
 }
@@ -593,7 +591,7 @@ InstructionsPage(){
 	erase(10,180,100,40);
 	write_text(">> BACK",10,180,WHITE,0);
 
-	while((char)getch()!=SPACE){}
+	while((char)getch()!=ENTER){}
 }
 
 DrawBoard(int difficulty, int level){
@@ -729,6 +727,12 @@ DrawBoard(int difficulty, int level){
     		drawCurrPos(xcoord-5,ycoord-5);
 		}
 
+
+    	if(board_value[row-1][col-1]!=-1){
+    		sprintf(str,"%d",board_value[row-1][col-1]);
+			write_text(str,xcoord,ycoord,WHITE,0);
+    	}
+
 		if(check == 0){
 			int checkIfWin = CheckEmpty();
 			if(checkIfWin == 0){
@@ -736,12 +740,6 @@ DrawBoard(int difficulty, int level){
 				write_text("You Win!",100,10,GREEN,0);
 			}
 		}
-
-    	if(board_value[row-1][col-1]!=-1){
-    		sprintf(str,"%d",board_value[row-1][col-1]);
-			write_text(str,xcoord,ycoord,WHITE,0);
-    	}
-
 	}while(key!=GAME_QUIT);
 }
 
