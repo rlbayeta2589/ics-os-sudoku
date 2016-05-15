@@ -480,7 +480,6 @@ int DifficultyPage(){
 	write_text("Easy",50,80,WHITE,0); 
 	write_text("Medium",130,80,WHITE,0);
 	write_text("Hard",220,80,WHITE,0);
-	write_text("Back",145,170,WHITE,0);
 	write_text("_____",xcoord,ycoord,WHITE,0); 
 
 	do{
@@ -551,7 +550,7 @@ int LevelPage(){
 		}
 
 		if(choice==0){
-			choice=3;
+			choice=10;
 			xcoord=230;
 		}else if(choice==11){
 			choice=1;
@@ -574,24 +573,23 @@ InstructionsPage(){
 	write_text("Instructions",100,10,GREEN,0);
 	write_text("The user will pick the difficulty",10,30,WHITE,0);
 	write_text("of the game",90,40,WHITE,0);
-	getch();
-	write_text("Choices of difficulty levels are:",10,60,WHITE,0);
-	getch();
+	while((char)getch()!=ENTER){}
+	write_text("Choices of difficulty are:",10,60,WHITE,0);
+	while((char)getch()!=ENTER){}
 	write_text("Easy",50,75,WHITE,0);
-	getch();
+	while((char)getch()!=ENTER){}
 	write_text("Medium",130,75,WHITE,0);
-	getch();
+	while((char)getch()!=ENTER){}
 	write_text("Hard",220,75,WHITE,0);
-	getch();
-	write_text("Random puzzle of picked difficulty",10,95,WHITE,0);
-	write_text("will be loaded",90,115,WHITE,0);
-	getch();
+	while((char)getch()!=ENTER){}
+	write_text("User will picked the level of ",10,95,WHITE,0);
+	write_text("difficulty (1-10)",90,115,WHITE,0);
+	while((char)getch()!=ENTER){}
 	write_text("Navigate using 'W' 'A' 'S' 'D' keys",8,140,WHITE,0);
-	getch();
+	while((char)getch()!=ENTER){}
 	write_text("Input answers using keys (1-9)",10,160,WHITE,0);
 	erase(10,180,100,40);
 	write_text(">> BACK",10,180,WHITE,0);
-
 	while((char)getch()!=ENTER){}
 }
 
@@ -617,7 +615,7 @@ DrawBoard(int difficulty, int level){
 	}
 
     sprintf(str, "LVL %d", level);
-	write_text(str,260,90,DARK_BLUE,0);
+	write_text(str,255,90,DARK_BLUE,0);
 
 	write_text("[R] eset",242,120,WHITE,0);
 	write_text("[Q] uit",242,140,WHITE,0);
