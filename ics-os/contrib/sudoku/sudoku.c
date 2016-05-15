@@ -619,6 +619,7 @@ DrawBoard(int difficulty, int level){
 
 	write_text("[R] eset",242,120,WHITE,0);
 	write_text("[Q] uit",242,140,WHITE,0);
+	write_text("[X] erase",242,160,WHITE,0);
 
 	for (i = 10; i <= 235; i++){
         for(j = 10; j <= 190; j++){
@@ -679,6 +680,11 @@ DrawBoard(int difficulty, int level){
 				xIndex++;
 				col++;
 				xcoord+=25;
+				break;
+			case 'x':
+				if(init_state[row-1][col-1]!=0)break;
+				board_value[row-1][col-1] = -1;
+				erase(xcoord-5,ycoord-5,22,17);
 				break;
 			case '1':
 			case '2':
