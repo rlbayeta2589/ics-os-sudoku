@@ -1,6 +1,7 @@
 
 #include "../../sdk/dexsdk.h"
 #include "../../sdk/time.h"
+#include "levels.h"
 
 
 #define START 1
@@ -59,7 +60,7 @@ int main(){
 				level = LevelPage();
 				
 				//read file and initialize the 2d array here
-
+				generateLevel(init_state,difficulty,level);
 				DrawBoard(difficulty, level);
 				break;
 			case INSTRUCTIONS :
@@ -92,6 +93,15 @@ void drawCurrPos(int x, int y){
     for (i = y; i < y+17; i++){
         for(j = x; j < x+22; j++){
             write_pixel(j, i, GREEN);
+        }
+    }
+}
+
+void drawFixTile(int x, int y){
+    int i, j;
+    for (i = y; i < y+17; i++){
+        for(j = x; j < x+22; j++){
+            write_pixel(j, i, GRAY);
         }
     }
 }
@@ -622,14 +632,20 @@ DrawBoard(int difficulty, int level){
         }
     }
 
-	//write_text("o",xcoord,ycoord,WHITE,0); 
+    ResetGame();
     drawCurrPos(xcoord-5,ycoord-5);
 
 	do{
 		input_key = 0;
 		key = (char) getch();
 
-		erase(xcoord-5,ycoord-5,22,17);
+
+		if(init_state[row-1][col-1]!=0){
+			drawFixTile(xcoord-5,ycoord-5);
+		}else{
+			erase(xcoord-5,ycoord-5,22,17);
+		}
+
 		if(board_value[row-1][col-1]!=-1){
     		sprintf(str,"%d",board_value[row-1][col-1]);
 			write_text(str,xcoord,ycoord,WHITE,0);
@@ -665,6 +681,7 @@ DrawBoard(int difficulty, int level){
 			case '7':
 			case '8':
 			case '9':
+				if(init_state[row-1][col-1]!=0)break;
 				board_value[row-1][col-1] = key-'0';
 				input_key=1;
 				break;
@@ -707,9 +724,6 @@ DrawBoard(int difficulty, int level){
     	}
 
 	}while(key!=GAME_QUIT);
-
-
-    getch();
 }
 
 ResetGame(){
@@ -717,15 +731,20 @@ ResetGame(){
 	int i,j, x, y;
 	for (i = 0; i < 9; i++){
         for(j = 0; j < 9; j++){
-        	board_value[i][j] = init_state[i][j];
-        }
+        	if(init_state[i][j]==0){
+        		board_value[i][j] = -1;
+        	}else{
+        		board_value[i][j] = init_state[i][j];
+       		}
+    	}
     }
 
-    for (i = 0, x=17; i < 9; i++, x+=25){
-        for(j = 0, y=17; j < 9; j++, y+=20){
+    for(j = 0, y=17; j < 9; j++, y+=20){
+    	for (i = 0, x=17; i < 9; i++, x+=25){
         	erase(x-5,y-5,22,17);
-        	if(board_value[i][j]!=-1){
-	    		sprintf(str,"%d",board_value[i][j]);
+        	if(board_value[j][i]!=-1){
+        		drawFixTile(x-5,y-5);
+	    		sprintf(str,"%d",board_value[j][i]);
 				write_text(str,x,y,WHITE,0);
     		}
     	}
