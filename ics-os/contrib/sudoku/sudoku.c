@@ -50,7 +50,7 @@ int main(){
 	set_graphics(VGA_320X200X256);
 	
 	erase(1,1,400,200); //change page
-	//Controls();
+	Controls();
 
 	do{
 		choice = StartPage();
@@ -125,7 +125,8 @@ Controls(){
 	write_text("D ==>",180,75,WHITE,0);
 	write_text("||",145,90,WHITE,0);
 	write_text("\\/",145,105,WHITE,0);
-	write_text("i___ENTER___i",100,120,WHITE,0);
+	write_text("            |",100,120,WHITE,0);
+	write_text("  ENTER  <--'",100,130,WHITE,0);
 	write_text("SELECT",130,140,WHITE,0);
 
 	write_text("Select to continue . . .",70,180,WHITE,0);
