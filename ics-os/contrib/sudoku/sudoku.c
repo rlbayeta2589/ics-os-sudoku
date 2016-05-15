@@ -231,7 +231,7 @@ int CheckBoard(int xcoord, int ycoord){
 
 
 	//first cluster checking
-	if(xIndex <= 2 && yIndex <= 2){
+	if(yIndex <= 2 && xIndex <= 2){
 
 		//looping the array to get a value
 		for(i = 0; i <= 2; i++){
@@ -258,7 +258,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//second cluster checking
-	else if(xIndex <= 2 && yIndex <= 5 && yIndex > 2){
+	else if(yIndex <= 2 && xIndex <= 5 && xIndex > 2){
 
 		for(i = 0; i <= 2; i++){
 			for(j = 3; j <= 5; j++){
@@ -282,7 +282,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//third cluster checking
-	else if(xIndex <= 2 && yIndex <= 8 && yIndex > 5){
+	else if(yIndex <= 2 && xIndex <= 8 && xIndex > 5){
 
 		for(i = 0; i <= 2; i++){
 			for(j = 6; j <= 8; j++){
@@ -305,7 +305,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//fourth cluster checking
-	else if(xIndex <= 5 && xIndex > 2 && yIndex <= 2){
+	else if(yIndex <= 5 && yIndex > 2 && xIndex <= 2){
 		
 		for(i = 3; i <= 5; i++){
 			for(j = 0; j <= 2; j++){
@@ -328,7 +328,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//fifth cluster checking
-	else if(xIndex <= 5 && xIndex > 2 && yIndex <= 5 && yIndex > 2){
+	else if(yIndex <= 5 && yIndex > 2 && xIndex <= 5 && xIndex > 2){
 
 		for(i = 3; i <= 5; i++){
 			for(j = 3; j <= 5; j++){
@@ -351,7 +351,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//sixth cluster checking
-	else if(xIndex <= 5 && xIndex > 2 && yIndex <= 8 && yIndex > 5){
+	else if(yIndex <= 5 && yIndex > 2 && xIndex <= 8 && xIndex > 5){
 
 		for(i = 3; i <= 5; i++){
 			for(j = 6; j <= 8; j++){
@@ -374,7 +374,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//seventh cluster checking
-	else if(xIndex <= 8 && xIndex > 5 && yIndex <= 2){
+	else if(yIndex <= 8 && yIndex > 5 && xIndex <= 2){
 
 		for(i = 6; i <= 8; i++){
 			for(j = 0; j <= 2; j++){
@@ -397,7 +397,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//eighth cluster checking
-	else if(xIndex <= 8 && xIndex > 5 && yIndex <= 5 && yIndex > 2){
+	else if(yIndex <= 8 && yIndex > 5 && xIndex <= 5 && xIndex > 2){
 
 		for(i = 6; i <= 8; i++){
 			for(j = 3; j <= 5; j++){
@@ -420,7 +420,7 @@ int CheckBoard(int xcoord, int ycoord){
 	}
 
 	//ninth cluster checking
-	else if(xIndex <= 8 && xIndex > 5 && yIndex <= 8 && yIndex > 5){
+	else if(yIndex <= 8 && yIndex > 5 && xIndex <= 8 && xIndex > 5){
 		
 		for(i = 6; i <= 8; i++){
 			for(j = 6; j <= 8; j++){
