@@ -597,8 +597,8 @@ DrawBoard(int difficulty, int level){
 	initializeBoard();
 	erase(1,1,400,200); //change page
 
-	char key, str[10];
-	int i,j, xcoord=17, ycoord=17, row=1, col=1, input_key=0, check=0;
+	char key, str[10], timer[5];
+	int i,j, xcoord=17, ycoord=17, row=1, col=1, input_key=0, check=0, t1, t2, elapsed_time, min, sec;
 
 	for (i = 240; i <= 310; i++){
         for(j = 60; j <= 105; j++){
@@ -642,7 +642,8 @@ DrawBoard(int difficulty, int level){
     }
 
     ResetGame();
-    drawCurrPos(xcoord-5,ycoord-5);
+	t1 = time();
+    drawCurrPos(xcoord-5,ycoord-5);	
 
 	do{
 		input_key = 0;
@@ -701,6 +702,7 @@ DrawBoard(int difficulty, int level){
 				break;
 			case GAME_RESET:
 				ResetGame();
+				t1 = time();
 				break;
 			case GAME_QUIT:
 				break;
@@ -725,7 +727,16 @@ DrawBoard(int difficulty, int level){
 			col=1;
 			xcoord=17;
 		}
-
+		t2 = time();
+		elapsed_time = t2-t1;
+		erase(244,30,80,30);
+		write_text("Timer:", 244, 20, WHITE, 0);
+		sprintf(timer,"%d",elapsed_time/60);
+		write_text(timer, 244, 30, WHITE, 0);
+		write_text("m", 265, 30, WHITE, 0);
+		sprintf(timer,"%d",elapsed_time%60);
+		write_text(timer,280, 30, WHITE,0);
+		write_text("s", 300, 30, WHITE, 0);
     	check = CheckBoard(xcoord-5,ycoord-5);
 
 		if(check!=-1){
@@ -743,6 +754,15 @@ DrawBoard(int difficulty, int level){
 			if(checkIfWin == 0){
 				erase(1,1,400,200); //change page
 				write_text("You Win!",100,10,GREEN,0);
+				t2 = time();
+				elapsed_time = t2-t1;
+				write_text("Time used:", 100, 20, WHITE, 0);
+				sprintf(timer,"%d",elapsed_time/60);
+				write_text(timer, 120, 30, WHITE, 0);
+				write_text("mins", 141, 30, WHITE, 0);
+				sprintf(timer,"%d",elapsed_time%60);
+				write_text(timer,200, 30, WHITE,0);
+				write_text("seconds", 221, 30, WHITE, 0);
 			}
 		}
 	}while(key!=GAME_QUIT);
