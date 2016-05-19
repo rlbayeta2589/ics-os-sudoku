@@ -3,7 +3,6 @@
 #include "../../sdk/time.h"
 #include "levels.h"
 
-
 #define START 1
 #define INSTRUCTIONS 2
 #define HIGHSCORES 3
@@ -30,17 +29,25 @@
 
 int xIndex = 0;
 int yIndex = 0;
-
-void erase(); //basically covers an area with a black rectangle
-void highlightBoard();
-int CheckBoard();
-int CheckEmpty();
-void initializeBoard();
-
 int init_state[9][9];
 int board_value[9][9];
 
-void erase(); //basically covers an area with a black rectangle
+void erase();
+void drawCurrPos();
+void drawFixTile();
+void initializeBoard();
+void Controls();
+int StartPage();
+int CheckBoard();
+int CheckEmpty();
+void highlightBoard();
+int DifficultyPage();
+int LevelPage();
+void InstructionsPage();
+void DrawBoard();
+void ResetGame();
+void ViewHighScores();
+void UpdateHighscores();
 
 int main(){
 	initializeBoard();
@@ -117,7 +124,7 @@ void initializeBoard(){
 		}
 }
 
-Controls(){
+void Controls(){
 
 	write_text("Controls :",40,40,WHITE,0); 
 	write_text("/\\",145,30,WHITE,0); 
@@ -569,7 +576,7 @@ int LevelPage(){
 }
 
 //display instructions
-InstructionsPage(){
+void InstructionsPage(){
 	erase(1,1,400,200); //change page
 
 	write_text(">> NEXT",10,180,WHITE,0);
@@ -597,7 +604,7 @@ InstructionsPage(){
 	while((char)getch()!=ENTER){}
 }
 
-DrawBoard(int difficulty, int level){
+void DrawBoard(int difficulty, int level){
 	initializeBoard();
 	erase(1,1,400,200); //change page
 
@@ -774,7 +781,7 @@ DrawBoard(int difficulty, int level){
 	}while(key!=GAME_QUIT);
 }
 
-ResetGame(){
+void ResetGame(){
 	char str[10];
 	int i,j, x, y;
 	for (i = 0; i < 9; i++){
@@ -799,7 +806,7 @@ ResetGame(){
     }
 }
 
-ViewHighScores(){
+void ViewHighScores(){
 	erase(1,1,400,200); //change page
 
 	FILE *fp;
@@ -833,6 +840,10 @@ ViewHighScores(){
 	while((char)getch()!=ENTER){}
 }
 
-UpdateHighscores(){
+void UpdateHighscores(int elapsed_time){
+
+	
+
+
 
 }
