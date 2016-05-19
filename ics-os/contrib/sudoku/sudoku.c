@@ -53,6 +53,7 @@ int main(){
 	erase(1,1,400,200); //change page
 	Controls();
 
+
 	do{
 		choice = StartPage();
 
@@ -68,6 +69,7 @@ int main(){
 				InstructionsPage();	//print page
 				break;
 			case HIGHSCORES :
+				ViewHighScores();
 				break;
 		}
 
@@ -154,7 +156,8 @@ int StartPage(){
 
 	write_text("Start",180,80,WHITE,0); 
 	write_text("Instructions",180,100,WHITE,0);
-	write_text("About",180,120,WHITE,0);
+	write_text("High Scores",180,120,WHITE,0);
+	//write_text("About",180,140,WHITE,0);
 	write_text("Quit",180,140,WHITE,0);
 
 	write_text(">>",150,80,WHITE,0); 
@@ -794,6 +797,42 @@ ResetGame(){
     		}
     	}
     }
+}
 
+ViewHighScores(){
+	erase(1,1,400,200); //change page
+
+	FILE *fp;
+	char buff[255];
+	char buff2[255];
+	int yvalue = 30;
+
+	fp = fopen("scores.txt", "r");
+
+	write_text("High Scores",110,10,GREEN,0);
+
+	if(fp!=NULL){
+
+		while(fgets(buff, 255, (FILE*)fp) != NULL){
+
+			//remove trailing newline
+			size_t i = strlen(buff) - 1;
+			if(buff[i] == '\n')
+				buff[i] = '\0';
+
+			sprintf(buff2,"%s",buff);
+			write_text(buff2, 70, yvalue, WHITE, 0);
+			yvalue = yvalue + 20;
+		}
+
+		fclose(fp);
+	}
+
+	write_text("Press Enter To Go Back",60,yvalue+20,GREEN,0);
+
+	while((char)getch()!=ENTER){}
+}
+
+UpdateHighscores(){
 
 }
