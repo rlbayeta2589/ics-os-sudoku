@@ -153,7 +153,7 @@ int StartPage(){
 
 	write_text("Start",180,80,WHITE,0); 
 	write_text("Instructions",180,100,WHITE,0);
-	write_text("High Scores",180,120,WHITE,0);
+	write_text("About",180,120,WHITE,0);
 	write_text("Quit",180,140,WHITE,0);
 
 	write_text(">>",150,80,WHITE,0); 
@@ -619,7 +619,7 @@ DrawBoard(int difficulty, int level){
 
 	write_text("[R] eset",242,120,WHITE,0);
 	write_text("[Q] uit",242,140,WHITE,0);
-	write_text("[X] erase",242,160,WHITE,0);
+	write_text("[E] rase",242,160,WHITE,0);
 
 	for (i = 10; i <= 235; i++){
         for(j = 10; j <= 190; j++){
