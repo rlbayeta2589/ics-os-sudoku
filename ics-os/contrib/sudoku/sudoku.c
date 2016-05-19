@@ -954,6 +954,13 @@ void UpdateHighscores(int elapsed_time, int difficulty){
 	char hardUpdated[10][255];
 	int i;
 
+
+	//TODO: ALGORITHM FOR CHECKING THE HIGHSCORES
+	//INAANTOK NA AKO NUNG UMABOT AKO DITO HAHA
+	//MAY BASIC STRUCTURE NA DIN NAMAN, PA AYOS NA LANG
+	//NAKA SETUP NA DIN YUNG MGA ARRAYS
+
+
 	if(difficulty == 1){		
 		//time values are stored in odd numbers
 		for(i = 1; i < 10; i = i + 2){
