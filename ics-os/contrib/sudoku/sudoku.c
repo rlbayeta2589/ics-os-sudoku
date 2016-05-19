@@ -12,6 +12,7 @@
 #define GAME_OVER 1
 #define GAME_RESET 'r'
 #define GAME_QUIT 'q'
+#define TILE_ERASE 'e'
 
 #define UP 'w'
 #define DOWN 's'
@@ -682,7 +683,7 @@ DrawBoard(int difficulty, int level){
 				col++;
 				xcoord+=25;
 				break;
-			case 'x':
+			case TILE_ERASE:
 				if(init_state[row-1][col-1]!=0)break;
 				board_value[row-1][col-1] = -1;
 				erase(xcoord-5,ycoord-5,22,17);
@@ -763,8 +764,9 @@ DrawBoard(int difficulty, int level){
 				sprintf(timer,"%d",elapsed_time%60);
 				write_text(timer,200, 30, WHITE,0);
 				write_text("seconds", 221, 130, WHITE, 0);
+				key = GAME_QUIT;
+				getch();
 			}
-			key = GAME_QUIT;
 		}
 	}while(key!=GAME_QUIT);
 }
