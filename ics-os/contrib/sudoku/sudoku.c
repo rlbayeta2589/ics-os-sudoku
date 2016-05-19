@@ -12,6 +12,7 @@
 #define GAME_OVER 1
 #define GAME_RESET 'r'
 #define GAME_QUIT 'q'
+#define TILE_ERASE 'e'
 
 #define UP 'w'
 #define DOWN 's'
@@ -27,30 +28,36 @@
 #define GREEN 2
 #define WHITE 63
 
-int xIndex = 0;
-int yIndex = 0;
-
-void erase(); //basically covers an area with a black rectangle
+void initializeBoard();
 void highlightBoard();
+void LoadScores();
 int CheckBoard();
 int CheckEmpty();
-void initializeBoard();
+void erase(); //basically covers an area with a black rectangle
 
+int xIndex = 0;
+int yIndex = 0;
 int init_state[9][9];
 int board_value[9][9];
 
-void erase(); //basically covers an area with a black rectangle
+int score_easy[10];
+int score_med[10];
+int score_hard[10];
+
+int difficulty = 0, level = 0;
 
 int main(){
 	initializeBoard();
 	char keypress, temp[10]; 
 	
-	int choice = 0, difficulty = 0, level = 0;
+	int choice = 0;
 	int board[9][9];
 	set_graphics(VGA_320X200X256);
 	
 	erase(1,1,400,200); //change page
 	Controls();
+
+	LoadScores();
 
 	do{
 		choice = StartPage();
@@ -333,8 +340,8 @@ int CheckBoard(int xcoord, int ycoord){
 		for(i = 3; i <= 5; i++){
 			for(j = 3; j <= 5; j++){
 
-				for(a = 3; a <= 5; a++){
 					for(b = 3; b <= 5; b++){
+				for(a = 3; a <= 5; a++){
 
 						if(board_value[i][j] == -1)
 							continue;
@@ -619,7 +626,7 @@ DrawBoard(int difficulty, int level){
 
 	write_text("[R] eset",242,120,WHITE,0);
 	write_text("[Q] uit",242,140,WHITE,0);
-	write_text("[X] erase",242,160,WHITE,0);
+	write_text("[E] rase",242,160,WHITE,0);
 
 	for (i = 10; i <= 235; i++){
         for(j = 10; j <= 190; j++){
@@ -682,7 +689,7 @@ DrawBoard(int difficulty, int level){
 				col++;
 				xcoord+=25;
 				break;
-			case 'x':
+			case TILE_ERASE:
 				if(init_state[row-1][col-1]!=0)break;
 				board_value[row-1][col-1] = -1;
 				erase(xcoord-5,ycoord-5,22,17);
@@ -792,5 +799,35 @@ ResetGame(){
     	}
     }
 
+
+}
+
+
+void LoadScores(){
+
+	erase(1,1,400,200); //change page
+
+	FILE *fp;
+	char str[10];
+	fp = fopen("scores.txt", "r");
+	
+	if(fp!=NULL){
+		
+		while(!feof(fp)){
+
+			fgets(str, 10 ,fp);
+
+			erase(100,100,50100,30);
+			write_text(str,100,100,WHITE,0);
+			getch();
+
+		}
+
+		fclose(fp);
+	}else{
+			write_text("BURAT",100,100,WHITE,1);
+	}
+
+	getch();
 
 }
