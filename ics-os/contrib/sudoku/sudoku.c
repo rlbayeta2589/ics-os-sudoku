@@ -753,17 +753,18 @@ DrawBoard(int difficulty, int level){
 			int checkIfWin = CheckEmpty();
 			if(checkIfWin == 0){
 				erase(1,1,400,200); //change page
-				write_text("You Win!",100,10,GREEN,0);
+				write_text("You Win!",100,80,GREEN,0);
 				t2 = time();
 				elapsed_time = t2-t1;
-				write_text("Time used:", 100, 20, WHITE, 0);
+				write_text("Time used:", 100, 100, WHITE, 0);
 				sprintf(timer,"%d",elapsed_time/60);
-				write_text(timer, 120, 30, WHITE, 0);
-				write_text("mins", 141, 30, WHITE, 0);
+				write_text(timer, 120, 130, WHITE, 0);
+				write_text("mins", 141, 130, WHITE, 0);
 				sprintf(timer,"%d",elapsed_time%60);
 				write_text(timer,200, 30, WHITE,0);
-				write_text("seconds", 221, 30, WHITE, 0);
+				write_text("seconds", 221, 130, WHITE, 0);
 			}
+			key = GAME_QUIT;
 		}
 	}while(key!=GAME_QUIT);
 }
