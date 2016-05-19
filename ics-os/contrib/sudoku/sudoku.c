@@ -809,17 +809,23 @@ void ResetGame(){
 void ViewHighScores(){
 	erase(1,1,400,200); //change page
 
-	FILE *fp;
+	char easy[10][255];
+	char medium[10][255];
+	char hard[10][255];
 	char buff[255];
-	char buff2[255];
-	int yvalue = 30;
+
+	int i = 0;
+
+	FILE *fp;
 
 	fp = fopen("scores.txt", "r");
 
-	write_text("High Scores",110,10,GREEN,0);
-
+	//when first time opeaning and reading the file will take around 3-5 seconds.
 	if(fp!=NULL){
 
+		int easyChecker = -1;
+		int mediumChecker = -1;
+		int hardChecker = -1;
 		while(fgets(buff, 255, (FILE*)fp) != NULL){
 
 			//remove trailing newline
@@ -827,23 +833,152 @@ void ViewHighScores(){
 			if(buff[i] == '\n')
 				buff[i] = '\0';
 
-			sprintf(buff2,"%s",buff);
-			write_text(buff2, 70, yvalue, WHITE, 0);
-			yvalue = yvalue + 20;
+			//checks where the pointer is reading in the file, in what difficulty
+			if(strcmp(buff, "1") == 0){
+				easyChecker = 1;
+				mediumChecker = -1;
+				hardChecker = -1;
+				i = 0;
+				continue;
+			}
+
+			if(strcmp(buff, "2") == 0){
+				easyChecker = -1;
+				mediumChecker = 1;
+				hardChecker = -1;
+				i = 0;
+				continue;
+			}
+
+			if(strcmp(buff, "3") == 0){
+				easyChecker = -1;
+				mediumChecker = -1;
+				hardChecker = 1;
+				i = 0;
+				continue;
+			}
+
+			//stores the values in the correct array
+			if(easyChecker == 1 && mediumChecker == -1 && hardChecker == -1){
+				strcpy(easy[i], buff);
+			}
+
+			if(easyChecker == -1 && mediumChecker == 1 && hardChecker == -1)
+				strcpy(medium[i], buff);
+
+			if(easyChecker == -1 && mediumChecker == -1 && hardChecker == 1)
+				strcpy(hard[i], buff);
+
+			i++;
 		}
 
 		fclose(fp);
 	}
 
-	write_text("Press Enter To Go Back",60,yvalue+20,GREEN,0);
 
+	//TODO: FIX UI FOR VIEWING THE HIGHSCORES, VALUES ALREADY IN ARRAYS
+	write_text("Press Enter To Go Back",60,40,GREEN,0);
 	while((char)getch()!=ENTER){}
 }
 
-void UpdateHighscores(int elapsed_time){
 
-	
+void UpdateHighscores(int elapsed_time, int difficulty){
+	char easy[10][255];
+	char medium[10][255];
+	char hard[10][255];
+	char buff[255];
+
+	int i = 0;
+
+	FILE *fp;
+
+	fp = fopen("scores.txt", "r");
+
+	//get all scores in the file, to compare
+	if(fp!=NULL){
+
+		int easyChecker = -1;
+		int mediumChecker = -1;
+		int hardChecker = -1;
+		while(fgets(buff, 255, (FILE*)fp) != NULL){
+
+			//remove trailing newline
+			size_t i = strlen(buff) - 1;
+			if(buff[i] == '\n')
+				buff[i] = '\0';
+
+			if(strcmp(buff, "1") == 0){
+				easyChecker = 1;
+				mediumChecker = -1;
+				hardChecker = -1;
+				i = 0;
+				continue;
+			}
+
+			if(strcmp(buff, "2") == 0){
+				easyChecker = -1;
+				mediumChecker = 1;
+				hardChecker = -1;
+				i = 0;
+				continue;
+			}
+
+			if(strcmp(buff, "3") == 0){
+				easyChecker = -1;
+				mediumChecker = -1;
+				hardChecker = 1;
+				i = 0;
+				continue;
+			}
 
 
+			if(easyChecker == 1 && mediumChecker == -1 && hardChecker == -1){
+				strcpy(easy[i], buff);
+			}
+
+			if(easyChecker == -1 && mediumChecker == 1 && hardChecker == -1)
+				strcpy(medium[i], buff);
+
+			if(easyChecker == -1 && mediumChecker == -1 && hardChecker == 1)
+				strcpy(hard[i], buff);
+
+			i++;
+		}
+
+		fclose(fp);
+	}
+
+	//arrays that will be written back to scores.txt, with the update if a user have a better time
+	char easyUpdated[10][255];
+	char mediumUpdated[10][255];
+	char hardUpdated[10][255];
+	int i;
+
+	if(difficulty == 1){		
+		//time values are stored in odd numbers
+		for(i = 1; i < 10; i = i + 2){
+			if(easy[i] != NULL){
+				int highScore = atoi(easy[i]);
+				if(highScore > elapsed_time){ 
+					//copy time of user, and ask for name
+				}
+				else if(highScore == elapsed_time){ 
+					//append two names at an index? 
+
+				}
+				else{
+					//if time of user is slower, copy the current high score
+				}
+			}
+		}
+	}
+
+	if(difficulty == 2){
+		
+	}
+
+	if(difficulty == 3){
+		
+	}
 
 }
