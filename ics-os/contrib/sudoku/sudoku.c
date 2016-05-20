@@ -82,8 +82,7 @@ int main(){
 
 	}while(choice != QUIT);
 
-
-//---------------------------------------------//	
+	
 	set_graphics(VGA_TEXT80X25X16);
 	clrscr();
 }
@@ -106,7 +105,7 @@ void drawCurrPos(int x, int y){
         }
     }
 }
-
+//for tiles that cannot be modified
 void drawFixTile(int x, int y){
     int i, j;
     for (i = y; i < y+17; i++){
@@ -164,7 +163,6 @@ int StartPage(){
 	write_text("Start",180,80,WHITE,0); 
 	write_text("Instructions",180,100,WHITE,0);
 	write_text("High Scores",180,120,WHITE,0);
-	//write_text("About",180,140,WHITE,0);
 	write_text("Quit",180,140,WHITE,0);
 
 	write_text(">>",150,80,WHITE,0); 
@@ -455,11 +453,11 @@ int CheckBoard(int xcoord, int ycoord){
 
 	return 0;
 }
-
+//returns 0 if all cells in the board has been filled, otherwise return -1
 int CheckEmpty(){
 	int i, j;
 
-	for(i = 0; i < 9; i++){
+	for(i = 0; i < 9; i++){		
 		for(j = 0; j < 9; j++){
 			if(board_value[i][j] == -1)
 				return -1;
@@ -611,7 +609,7 @@ void DrawBoard(int difficulty, int level){
 	char key, str[10], timer[5];
 	int i,j, xcoord=17, ycoord=17, row=1, col=1, input_key=0, check=0, t1, t2, elapsed_time, min, sec;
 
-	for (i = 240; i <= 310; i++){
+	for (i = 240; i <= 310; i++){			
         for(j = 60; j <= 105; j++){
     		write_pixel(i, j, PALE_YELLOW);
         }
@@ -632,7 +630,7 @@ void DrawBoard(int difficulty, int level){
 	write_text("[Q] uit",242,140,WHITE,0);
 	write_text("[E] rase",242,160,WHITE,0);
 
-	for (i = 10; i <= 235; i++){
+	for (i = 10; i <= 235; i++){			//draw board
         for(j = 10; j <= 190; j++){
 
         	if((i+40)%25==0 || (j+10)%20==0){
@@ -651,7 +649,7 @@ void DrawBoard(int difficulty, int level){
 
         }
     }
-
+	//start game
     ResetGame();
 	t1 = time();
     drawCurrPos(xcoord-5,ycoord-5);	
@@ -662,7 +660,7 @@ void DrawBoard(int difficulty, int level){
 
 
 		if(init_state[row-1][col-1]!=0){
-			drawFixTile(xcoord-5,ycoord-5);
+			drawFixTile(xcoord-5,ycoord-5);	
 		}else{
 			erase(xcoord-5,ycoord-5,22,17);
 		}
@@ -672,7 +670,7 @@ void DrawBoard(int difficulty, int level){
 			write_text(str,xcoord,ycoord,WHITE,0);
     	}
 
-		switch(key){
+		switch(key){		//switch case for the key inputs
 			case UP:
 				yIndex--;
 				row--;
@@ -693,7 +691,7 @@ void DrawBoard(int difficulty, int level){
 				col++;
 				xcoord+=25;
 				break;
-			case TILE_ERASE:
+			case TILE_ERASE:			//erases the value at the current cell
 				if(init_state[row-1][col-1]!=0)break;
 				board_value[row-1][col-1] = -1;
 				erase(xcoord-5,ycoord-5,22,17);
@@ -707,7 +705,7 @@ void DrawBoard(int difficulty, int level){
 			case '7':
 			case '8':
 			case '9':
-				if(init_state[row-1][col-1]!=0)break;
+				if(init_state[row-1][col-1]!=0)break;			//input number
 				board_value[row-1][col-1] = key-'0';
 				input_key=1;
 				break;
@@ -719,7 +717,7 @@ void DrawBoard(int difficulty, int level){
 				break;
 		}
 
-		if(row==0){
+		if(row==0){	
 			yIndex = 8;
 			row=9;
 			ycoord=177;
@@ -738,7 +736,7 @@ void DrawBoard(int difficulty, int level){
 			col=1;
 			xcoord=17;
 		}
-		t2 = time();
+		t2 = time();		//for the timer, counts elapsed_time
 		elapsed_time = t2-t1;
 		erase(244,30,80,30);
 		write_text("Timer:", 244, 20, WHITE, 0);
@@ -760,9 +758,9 @@ void DrawBoard(int difficulty, int level){
 			write_text(str,xcoord,ycoord,WHITE,0);
     	}
 
-		if(check == 0){
+		if(check == 0){	
 			int checkIfWin = CheckEmpty();
-			if(checkIfWin == 0){
+			if(checkIfWin == 0){		//if the player has finished the game
 				erase(1,1,400,200); //change page
 				write_text("You Win!",100,80,GREEN,0);
 				t2 = time();
@@ -772,15 +770,15 @@ void DrawBoard(int difficulty, int level){
 				write_text(timer, 120, 130, WHITE, 0);
 				write_text("mins", 141, 130, WHITE, 0);
 				sprintf(timer,"%d",elapsed_time%60);
-				write_text(timer,200, 30, WHITE,0);
-				write_text("seconds", 221, 130, WHITE, 0);
+				write_text(timer,200, 130, WHITE,0);
+				write_text("seconds", 221, 130, WHITE, 0);			
 				key = GAME_QUIT;
 				getch();
 			}
 		}
 	}while(key!=GAME_QUIT);
 }
-
+//loads the initial state of the game
 void ResetGame(){
 	char str[10];
 	int i,j, x, y;
@@ -876,14 +874,13 @@ void ViewHighScores(){
 	}
 
 
-	//TODO: FIX UI FOR VIEWING THE HIGHSCORES, VALUES ALREADY IN ARRAYS
+	
 	write_text("Press Enter To Go Back",60,40,GREEN,0);
 	while((char)getch()!=ENTER){}
 }
 
 
-//TODO: CHECK ALGO ANG GET USER NAME INPUT
-//UPDATE: CHANGED IMPLEMENTATION TO LINKED LIST, HARD TO MANIPULATE ARRAY IN C :(
+//updates highscores given the elapsed_time and difficulty of the finished game
 void UpdateHighscores(int elapsed_time, int difficulty){
 	typedef struct scores{
 		char name[255];
@@ -1007,8 +1004,8 @@ void UpdateHighscores(int elapsed_time, int difficulty){
 	char name[255];
 	char elapsed_time_string[255];
 	sprintf(elapsed_time_string,"%d",elapsed_time);	
-
-	scores *newNode = malloc(sizeof(scores));
+	
+	scores *newNode = malloc(sizeof(scores));		//create new "scores" node to be inserted in the list of highscores
 	strcpy(newNode->name,name);
 	strcpy(newNode->time,elapsed_time_string);
 	newNode->next = NULL;
@@ -1058,11 +1055,106 @@ void UpdateHighscores(int elapsed_time, int difficulty){
 	}
 
 	if(difficulty == 2){
-		
+		scores *mover;
+		mover = medium;
+
+		//if the list is empty, first high score at the difficulty
+		if(mover == NULL)
+			mover = newNode;
+
+		//traverse the whole list and insert
+		else{
+			while(mover != NULL){
+				int mover_time = atoi(mover->time);
+				int mover_time_next;
+				if(mover->next != NULL)
+					mover_time_next = atoi(mover->next->time);
+
+				//insert at head
+				if(mover_time > elapsed_time && mover == medium){
+					newNode->next = medium;
+					medium = newNode;
+					break;
+				}
+
+				//insert at middle
+				else if(mover_time < elapsed_time && mover_time_next > elapsed_time){
+					newNode->next = mover->next;
+					mover->next = newNode;
+					break;
+				}
+
+				//insert at tail
+				else if(mover->next == NULL && mover_time < elapsed_time){
+					mover->next = newNode;
+					break;
+				}
+
+				else
+					mover = mover->next;
+			}		
+		}
 	}
 
 	if(difficulty == 3){
-		
+		scores *mover;
+		mover = hard;
+
+		//if the list is empty, first high score at the difficulty
+		if(mover == NULL)
+			mover = newNode;
+
+		//traverse the whole list and insert
+		else{
+			while(mover != NULL){
+				int mover_time = atoi(mover->time);
+				int mover_time_next;
+				if(mover->next != NULL)
+					mover_time_next = atoi(mover->next->time);
+
+				//insert at head
+				if(mover_time > elapsed_time && mover == hard){
+					newNode->next = hard;
+					hard = newNode;
+					break;
+				}
+
+				//insert at middle
+				else if(mover_time < elapsed_time && mover_time_next > elapsed_time){
+					newNode->next = mover->next;
+					mover->next = newNode;
+					break;
+				}
+
+				//insert at tail
+				else if(mover->next == NULL && mover_time < elapsed_time){
+					mover->next = newNode;
+					break;
+				}
+
+				else
+					mover = mover->next;
+			}		
+		}
 	}
+	scores *mover;		//writes all the current highscores from each difficulty to scores.txt
+	fp = fopen("scores.txt", "w");
+	fwrite("1", 1, 1, fp);
+	for(mover=easy; mover!=NULL; mover=mover->next){
+		fwrite(mover->name, 255, 1, fp);
+		fwrite(mover->time, 255, 1, fp);
+	}
+	fwrite("2", 1, 1, fp);
+	for(mover=medium; mover!=NULL; mover=mover->next){
+		fwrite(mover->name, 255, 1, fp);
+		fwrite(mover->time, 255, 1, fp);
+	}
+	fwrite("3", 1, 1, fp);
+	for(mover=hard; mover!=NULL; mover=mover->next){
+		fwrite(mover->name, 255, 1, fp);
+		fwrite(mover->time, 255, 1, fp);
+	}
+
+	fclose(fp);
 
 }
