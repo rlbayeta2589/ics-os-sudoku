@@ -1,3 +1,13 @@
+/*
+	SUDOKU
+	CMSC 125 PROJECT
+	AY 2015-2016, SECOND SEMESTER
+
+	CREATED BY:
+	REYNALDO BAYETA III
+	FRANCIS DEOFERIO
+	ROSECHELLE JOY ORAA
+*/
 
 #include "../../sdk/dexsdk.h"
 #include "../../sdk/time.h"
@@ -76,7 +86,7 @@ int main(){
 				InstructionsPage();	//print page
 				break;
 			case HIGHSCORES :
-				ViewHighScores();
+				//ViewHighScores();
 				break;
 		}
 
@@ -105,6 +115,7 @@ void drawCurrPos(int x, int y){
         }
     }
 }
+
 //for tiles that cannot be modified
 void drawFixTile(int x, int y){
     int i, j;
@@ -803,6 +814,13 @@ void ResetGame(){
     	}
     }
 }
+
+
+/********************
+FUNCTIONS FOR VIEWING AND UPDATING HIGHSCORES
+BUT SOME VERSIONS OF OS CANT DETECT FILE READING AND FILE WRITING
+*********************/
+
 
 void ViewHighScores(){
 	erase(1,1,400,200); //change page
