@@ -1021,7 +1021,8 @@ void UpdateHighscores(int elapsed_time, int difficulty){
 		//traverse the whole list and insert at the node
 		while(mover != NULL){
 			int mover_time = atoi(mover->time);
-			int mover_time_next = atoi(mover->next->time);
+			if(mover->next != NULL)
+				int mover_time_next = atoi(mover->next->time);
 
 			//insert at head
 			if(mover_time > elapsed_time && mover == easy){
