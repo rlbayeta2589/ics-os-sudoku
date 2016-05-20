@@ -882,13 +882,22 @@ void ViewHighScores(){
 }
 
 
+//TODO: CHECK ALGO ANG GET USER NAME INPUT
+//UPDATE: CHANGED IMPLEMENTATION TO LINKED LIST, HARD TO MANIPULATE ARRAY IN C :(
 void UpdateHighscores(int elapsed_time, int difficulty){
-	char easy[10][255];
-	char medium[10][255];
-	char hard[10][255];
-	char buff[255];
+	typedef struct scores{
+		char name[255];
+		char time[255];
+		struct scores *next;
+	}scores;
 
-	int i = 0;
+	scores *easy = NULL;
+	scores *medium = NULL;
+	scores *hard = NULL;
+
+	char buffName[255];
+	char buffTime[255];
+	size_t length;
 
 	FILE *fp;
 
@@ -900,84 +909,143 @@ void UpdateHighscores(int elapsed_time, int difficulty){
 		int easyChecker = -1;
 		int mediumChecker = -1;
 		int hardChecker = -1;
-		while(fgets(buff, 255, (FILE*)fp) != NULL){
+		while(fgets(buffName, 255, (FILE*)fp) != NULL){
 
 			//remove trailing newline
-			size_t i = strlen(buff) - 1;
-			if(buff[i] == '\n')
-				buff[i] = '\0';
+			length = strlen(buffName) - 1;
+			if(buffName[length] == '\n')
+				buffName[length] = '\0';
 
-			if(strcmp(buff, "1") == 0){
+
+			if(strcmp(buffName, "1") == 0){
 				easyChecker = 1;
 				mediumChecker = -1;
 				hardChecker = -1;
-				i = 0;
 				continue;
 			}
 
-			if(strcmp(buff, "2") == 0){
+			if(strcmp(buffName, "2") == 0){
 				easyChecker = -1;
 				mediumChecker = 1;
 				hardChecker = -1;
-				i = 0;
 				continue;
 			}
 
-			if(strcmp(buff, "3") == 0){
+			if(strcmp(buffName, "3") == 0){
 				easyChecker = -1;
 				mediumChecker = -1;
 				hardChecker = 1;
-				i = 0;
 				continue;
 			}
 
+			//will only execute when not 1 or 2 or 3
+			fgets(buffTime, 255, (FILE*)fp);
+			length = strlen(buffTime) - 1;
+			if(buffTime[length] == '\n')
+				buffTime[length] = '\0';
+
 
 			if(easyChecker == 1 && mediumChecker == -1 && hardChecker == -1){
-				strcpy(easy[i], buff);
+				scores *newNode = malloc(sizeof(scores));
+				strcpy(newNode->name,buffName);
+				strcpy(newNode->time,buffTime);
+				newNode->next = NULL;
+
+				if(easy == NULL)
+					easy = newNode;
+				else{
+					scores *mover;
+					mover = easy;
+					while(mover->next != NULL)
+						mover = mover->next;
+
+					mover->next = newNode;
+				}
 			}
 
-			if(easyChecker == -1 && mediumChecker == 1 && hardChecker == -1)
-				strcpy(medium[i], buff);
+			if(easyChecker == -1 && mediumChecker == 1 && hardChecker == -1){
+				scores *newNode = malloc(sizeof(scores));
+				strcpy(newNode->name,buffName);
+				strcpy(newNode->time,buffTime);
+				newNode->next = NULL;
 
-			if(easyChecker == -1 && mediumChecker == -1 && hardChecker == 1)
-				strcpy(hard[i], buff);
+				if(medium == NULL)
+					medium = newNode;
+				else{
+					scores *mover;
+					mover = medium;
+					while(mover->next != NULL)
+						mover = mover->next;
 
-			i++;
+					mover->next = newNode;
+				}
+
+			}
+
+			if(easyChecker == -1 && mediumChecker == -1 && hardChecker == 1){
+				scores *newNode = malloc(sizeof(scores));
+				strcpy(newNode->name,buffName);
+				strcpy(newNode->time,buffTime);
+				newNode->next = NULL;
+
+				if(hard == NULL)
+					hard = newNode;
+				else{
+					scores *mover;
+					mover = hard;
+					while(mover->next != NULL)
+						mover = mover->next;
+
+					mover->next = newNode;
+				}
+			}
 		}
 
 		fclose(fp);
 	}
 
-	//arrays that will be written back to scores.txt, with the update if a user have a better time
-	char easyUpdated[10][255];
-	char mediumUpdated[10][255];
-	char hardUpdated[10][255];
-	int i;
+	char name[255];
+	char elapsed_time_string[255];
+	sprintf(elapsed_time_string,"%d",elapsed_time);	
+
+	scores *newNode = malloc(sizeof(scores));
+	strcpy(newNode->name,name);
+	strcpy(newNode->time,elapsed_time_string);
+	newNode->next = NULL;
 
 
-	//TODO: ALGORITHM FOR CHECKING THE HIGHSCORES
-	//INAANTOK NA AKO NUNG UMABOT AKO DITO HAHA
-	//MAY BASIC STRUCTURE NA DIN NAMAN, PA AYOS NA LANG
-	//NAKA SETUP NA DIN YUNG MGA ARRAYS
+	if(difficulty == 1){
+		scores *mover;
+		mover = easy;
 
+		//traverse the whole list and insert at the node
+		while(mover != NULL){
+			int mover_time = atoi(mover->time);
+			int mover_time_next = atoi(mover->next->time);
 
-	if(difficulty == 1){		
-		//time values are stored in odd numbers
-		for(i = 1; i < 10; i = i + 2){
-			if(easy[i] != NULL){
-				int highScore = atoi(easy[i]);
-				if(highScore > elapsed_time){ 
-					//copy time of user, and ask for name
-				}
-				else if(highScore == elapsed_time){ 
-					//append two names at an index? 
-
-				}
-				else{
-					//if time of user is slower, copy the current high score
-				}
+			//insert at head
+			if(mover_time > elapsed_time && mover == easy){
+				newNode->next = easy;
+				easy = newNode;
+				break;
 			}
-		}
+
+			//insert at middle
+			else if(mover_time < elapsed_time && mover_time_next > elapsed_time){
+				newNode->next = mover->next;
+				mover->next = newNode;
+				break;
+			}
+
+			//insert at tail
+			else if(mover->next == NULL && mover_time < elapsed_time){
+				mover->next = newNode;
+				break;
+			}
+
+			else
+				mover = mover->next;
+		}		
 	}
 
 	if(difficulty == 2){
