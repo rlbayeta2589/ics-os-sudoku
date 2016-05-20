@@ -1018,35 +1018,43 @@ void UpdateHighscores(int elapsed_time, int difficulty){
 		scores *mover;
 		mover = easy;
 
-		//traverse the whole list and insert at the node
-		while(mover != NULL){
-			int mover_time = atoi(mover->time);
-			if(mover->next != NULL)
-				int mover_time_next = atoi(mover->next->time);
+		//if the list is empty, first high score at the difficulty
+		if(mover == NULL)
+			mover = newNode;
 
-			//insert at head
-			if(mover_time > elapsed_time && mover == easy){
-				newNode->next = easy;
-				easy = newNode;
-				break;
-			}
+		//traverse the whole list and insert
+		else{
+			while(mover != NULL){
+				int mover_time = atoi(mover->time);
+				int mover_time_next;
+				if(mover->next != NULL)
+					mover_time_next = atoi(mover->next->time);
 
-			//insert at middle
-			else if(mover_time < elapsed_time && mover_time_next > elapsed_time){
-				newNode->next = mover->next;
-				mover->next = newNode;
-				break;
-			}
+				//insert at head
+				if(mover_time > elapsed_time && mover == easy){
+					newNode->next = easy;
+					easy = newNode;
+					break;
+				}
 
-			//insert at tail
-			else if(mover->next == NULL && mover_time < elapsed_time){
-				mover->next = newNode;
-				break;
-			}
+				//insert at middle
+				else if(mover_time < elapsed_time && mover_time_next > elapsed_time){
+					newNode->next = mover->next;
+					mover->next = newNode;
+					break;
+				}
 
-			else
-				mover = mover->next;
+				//insert at tail
+				else if(mover->next == NULL && mover_time < elapsed_time){
+					mover->next = newNode;
+					break;
+				}
+
+				else
+					mover = mover->next;
+			}		
 		}		
+		
 	}
 
 	if(difficulty == 2){
